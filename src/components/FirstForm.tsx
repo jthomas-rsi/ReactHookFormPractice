@@ -24,14 +24,13 @@ interface FormData {
 const FirstForm = () => {
   //destructure methods from useForm hook
   const {
-    register,
     handleSubmit,
     reset,
     control,
-    formState: { errors }, // allows us to set logic based returns for form sections
+    formState: { errors },
   } = useForm<FormData>();
 
-  //create function to handle from submission
+  //function logs form data to console
   const handleFormSubmit = (data: FormData) => {
     console.log(data);
     reset();
@@ -91,19 +90,20 @@ const FirstForm = () => {
           <Controller
             name="age"
             control={control}
-            render={({ fieldState: { error } }) => (
+            render={({ field: { onChange, value } }) => (
               <>
                 <InputLabel id="ageSelect-label">{"Age"}</InputLabel>
                 <Slider
-                  size="medium"
+                  size="small"
                   min={0}
                   max={100}
+                  value={value} 
+                  onChange={onChange}
                   aria-label="age picker"
                   valueLabelDisplay="auto"
                 />
               </>
             )}
-            rules={{ required: "You need to pick an age" }}
           />
 
           {/* Date Of birth */}
@@ -164,8 +164,7 @@ const FirstForm = () => {
           />
 
           {/* Submit Button */}
-          {/* TODO: Kink button to form submit */}
-          <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+          <Button type="submit" variant="contained"  color='primary' endIcon={<SendIcon />}>
             Submit
           </Button>
         </Stack>

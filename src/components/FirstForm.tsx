@@ -97,7 +97,6 @@ const FirstForm = () => {
                   size="small"
                   min={0}
                   max={100}
-                  value={value} 
                   onChange={onChange}
                   aria-label="age picker"
                   valueLabelDisplay="auto"

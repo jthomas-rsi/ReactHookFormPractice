@@ -1,6 +1,14 @@
-import { useForm } from "react-hook-form";
-import Stack from "@mui/material/Stack";
+import { useForm, Controller } from "react-hook-form";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import Stack from "@mui/material/Stack";
+import SendIcon from "@mui/icons-material/Send";
+import Slider from "@mui/material/Slider";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import InputLabel from "@mui/material/InputLabel";
 
 // create interface for from props
 interface FormData {
@@ -8,18 +16,19 @@ interface FormData {
   lastName: string;
   age: number;
   birthDate: Date;
-  phoneNumber: number;
+  phoneNumber: string;
   email: string;
 }
 
 // define form component
-const FirstForm = (): JSX.Element => {
+const FirstForm = () => {
   //destructure methods from useForm hook
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors } // allows us to set logic based returns for form sections
+    control,
+    formState: { errors }, // allows us to set logic based returns for form sections
   } = useForm<FormData>();
 
   //create function to handle from submission
@@ -31,67 +40,134 @@ const FirstForm = (): JSX.Element => {
   return (
     <Box
       sx={{
-        height: 500,
+        marginTop: "5em",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
       }}
     >
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         <Stack spacing={2}>
           {/* First name */}
-          <Stack>
-            <label htmlFor="firstName">First Name </label>
-            <input
-              id="firstName"
-              {...register("firstName", { required: true })}
-            />
-            {errors.firstName && "First name is required"}
-          </Stack>
+          <Controller
+            name="firstName"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                required
+                label="First Name"
+                variant="outlined"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                helperText={error ? error.message : null}
+              />
+            )}
+            rules={{ required: "First name is requried" }}
+          />
 
           {/* Last name */}
-          <Stack>
-            <label htmlFor="lastName">Last Name </label>
-            <input {...register("lastName", { required: true })} />
-            {errors.lastName && "Last name is required"}
-          </Stack>
+          <Controller
+            name="lastName"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                required
+                label="Last name"
+                variant="outlined"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                helperText={error ? error.message : null}
+              />
+            )}
+            rules={{ required: "Last names is requried" }}
+          />
 
-          {/* Age */}
-          <Stack>
-            <label htmlFor="age">Age </label>
-            <input id="age" type="number" {...register("age")} />
-          </Stack>
+          {/* Age Group*/}
+          {/* TODO figure out a way to get value from slider comp */}
+          <Controller
+            name="age"
+            control={control}
+            render={({ fieldState: { error } }) => (
+              <>
+                <InputLabel id="ageSelect-label">{"Age"}</InputLabel>
+                <Slider
+                  size="medium"
+                  min={0}
+                  max={100}
+                  aria-label="age picker"
+                  valueLabelDisplay="auto"
+                />
+              </>
+            )}
+            rules={{ required: "You need to pick an age" }}
+          />
 
           {/* Date Of birth */}
-          <Stack>
-            <label htmlFor="birthDate">Date Of Birth </label>
-            <input type="date" id="birthDate" {...register("birthDate")} />
-            {errors.birthDate && "Date of birth required"}
-          </Stack>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Controller
+              name={"birthDate"}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <DatePicker
+                  label="Date Of Birth"
+                  value={value}
+                  onChange={onChange}
+                  renderInput={(
+                    params: JSX.IntrinsicAttributes & TextFieldProps
+                  ) => <TextField {...params} />}
+                />
+              )}
+            />
+          </LocalizationProvider>
 
           {/* Phone Number */}
-          <Stack>
-            <label htmlFor="birthDate">Phone Number </label>
-            <input
-              placeholder={"(555)-867-5309"}
-              {...register("phoneNumber", { required: true })}
-            />
-            {errors.phoneNumber && "Phone number is required"}
-          </Stack>
+          {/* TODO: restrict phone number to input to numbers and (xxx)xxx-xxxx format */}
+          <Controller
+            name="phoneNumber"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                required
+                label="Phone Number"
+                variant="outlined"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                helperText={error ? error.message : null}
+              />
+            )}
+            rules={{ required: "Phone number is requried" }}
+          />
 
           {/* Email Address */}
-          <Stack>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              placeholder={"myAddress@provider.com"}
-              {...register("email", { required: true })}
-            />
-            {errors.email && "Email is required"}
-          </Stack>
+          <Controller
+            name="email"
+            control={control}
+            defaultValue=""
+            render={({ field: { onChange, value }, fieldState: { error } }) => (
+              <TextField
+                required
+                label="Email"
+                variant="outlined"
+                value={value}
+                onChange={onChange}
+                error={!!error}
+                helperText={error ? error.message : null}
+              />
+            )}
+            rules={{ required: "Email is requried" }}
+          />
 
           {/* Submit Button */}
-          <input type={"submit"} />
+          {/* TODO: Kink button to form submit */}
+          <Button type="submit" variant="contained" endIcon={<SendIcon />}>
+            Submit
+          </Button>
         </Stack>
       </form>
     </Box>

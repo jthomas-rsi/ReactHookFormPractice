@@ -12,9 +12,11 @@ import Slider from "@mui/material/Slider";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
+import DataDisplay from "./DataDisplay";
+import { useState } from "react";
 
 // create interface for from props
-interface FormData {
+export interface FormData {
   firstName: string;
   lastName: string;
   age: number;
@@ -22,9 +24,17 @@ interface FormData {
   phoneNumber: string;
   email: string;
 }
+/**
+  TODO:
+    define state for showing ClientData after form submission
+    define separate component for displaying client data   
+
+ */
 
 // define form component
 const FirstForm = () => {
+  const [clientData, setClientData] = useState<FormData>();
+  const [showData, setShowData] = useState(false);
   //destructure methods from useForm hook
   const {
     handleSubmit,
@@ -37,6 +47,8 @@ const FirstForm = () => {
   const handleFormSubmit = (data: FormData) => {
     console.log(data);
     reset();
+    setClientData(data);
+    setShowData(true);
   };
 
   return (
@@ -200,6 +212,12 @@ const FirstForm = () => {
           </form>
         </CardContent>
       </Card>
+      {showData && (
+        <>
+          <DataDisplay data={clientData} />
+          <Button onClick={() => setShowData(false)}>Clear Data</Button>
+        </>
+      )}
     </Box>
   );
 };

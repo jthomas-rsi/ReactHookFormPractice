@@ -26,12 +26,6 @@ export interface FormData {
   phoneNumber: string;
   email: string;
 }
-/**
-  TODO:
-    define state for showing ClientData after form submission
-    define separate component for displaying client data   
-
- */
 
 // define form component
 const FirstForm = () => {
@@ -221,7 +215,6 @@ const FirstForm = () => {
           sx={{
             margin: "1em",
             backgroundColor: "#DAD7CD",
-            // textAlign: "Center",
           }}
         >
           <CardContent>

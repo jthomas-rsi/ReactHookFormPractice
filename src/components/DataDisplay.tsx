@@ -1,5 +1,7 @@
+import { Stack } from "@mui/system";
 import { useState } from "react";
 import { FormData } from "./FirstForm";
+import Divider from "@mui/material/Divider";
 
 interface DisplayProps {
   data?: FormData;
@@ -10,14 +12,21 @@ const DataDisplay = ({ data }: DisplayProps): JSX.Element => {
     console.log("inside data display", Object.keys(data));
     const { firstName, lastName, age, birthDate, phoneNumber, email } = data;
     return (
-      <div>
-        <>{firstName}</>
-        <>{lastName}</>
-        <>{age}</>
-        <>{birthDate.toDateString}</>
-        <>{phoneNumber}</>
-        <>{email}</>
-      </div>
+      <Stack spacing={3}>
+        <Divider />
+        <div>{`First Name: ${firstName}`}</div>
+        <Divider />
+        <div>{`Last Name: ${lastName}`}</div>
+        <Divider />
+        <div>{`Age: ${age}`}</div>
+        <Divider />
+        <div>{` Birth Date: ${birthDate.toDateString()}`}</div>
+        <Divider />
+        <div>{`Phone Number: ${phoneNumber}`}</div>
+        <Divider />
+        <div>{`Email: ${email}`}</div>
+        <Divider />
+      </Stack>
     );
   } else {
     return <></>;

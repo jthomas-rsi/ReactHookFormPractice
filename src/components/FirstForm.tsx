@@ -14,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import InputLabel from "@mui/material/InputLabel";
 import DataDisplay from "./DataDisplay";
 import { useState } from "react";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { CardActions } from "@mui/material";
 
 // create interface for from props
 export interface FormData {
@@ -61,162 +63,184 @@ const FirstForm = () => {
         backgroundColor: "#588157",
       }}
     >
-      <Card
-        sx={{
-          backgroundColor: "#DAD7CD",
-        }}
-      >
-        <CardContent>
-          <Typography variant="h6" mb={2}>
-            Client Data
-          </Typography>
-          <form onSubmit={handleSubmit(handleFormSubmit)}>
-            <Stack spacing={2}>
-              {/* First name */}
-              <Controller
-                name="firstName"
-                control={control}
-                defaultValue=""
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    required
-                    label="First Name"
-                    variant="outlined"
-                    value={value}
-                    onChange={onChange}
-                    error={!!error}
-                    helperText={error ? error.message : null}
-                  />
-                )}
-                rules={{ required: "First name is required" }}
-              />
-
-              {/* Last name */}
-              <Controller
-                name="lastName"
-                control={control}
-                defaultValue=""
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    required
-                    label="Last name"
-                    variant="outlined"
-                    value={value}
-                    onChange={onChange}
-                    error={!!error}
-                    helperText={error ? error.message : null}
-                  />
-                )}
-                rules={{ required: "Last names is required" }}
-              />
-
-              {/* Age Group*/}
-              {/* TODO figure out a way to get value from slider comp */}
-              <Controller
-                name="age"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <>
-                    <InputLabel id="ageSelect-label">{"Age"}</InputLabel>
-                    <Slider
-                      size="small"
-                      min={0}
-                      max={100}
-                      onChange={onChange}
-                      aria-label="age picker"
-                      valueLabelDisplay="auto"
-                    />
-                  </>
-                )}
-              />
-
-              {/* Date Of birth */}
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
+      {!showData && (
+        <Card
+          sx={{
+            backgroundColor: "#DAD7CD",
+          }}
+        >
+          <CardContent>
+            <Typography variant="h6" mb={2}>
+              Personal Information
+            </Typography>
+            <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <Stack spacing={2}>
+                {/* First name */}
                 <Controller
-                  name={"birthDate"}
+                  name="firstName"
                   control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <DatePicker
-                      label="Date Of Birth"
+                  defaultValue=""
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField
+                      required
+                      label="First Name"
+                      variant="outlined"
                       value={value}
                       onChange={onChange}
-                      renderInput={(
-                        params: JSX.IntrinsicAttributes & TextFieldProps
-                      ) => <TextField {...params} />}
+                      error={!!error}
+                      helperText={error ? error.message : null}
                     />
                   )}
+                  rules={{ required: "First name is required" }}
                 />
-              </LocalizationProvider>
 
-              {/* Phone Number */}
-              {/* TODO: restrict phone number to input to numbers and (xxx)xxx-xxxx format */}
-              <Controller
-                name="phoneNumber"
-                control={control}
-                defaultValue=""
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    required
-                    label="Phone Number"
-                    variant="outlined"
-                    value={value}
-                    onChange={onChange}
-                    error={!!error}
-                    helperText={error ? error.message : null}
+                {/* Last name */}
+                <Controller
+                  name="lastName"
+                  control={control}
+                  defaultValue=""
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField
+                      required
+                      label="Last name"
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!error}
+                      helperText={error ? error.message : null}
+                    />
+                  )}
+                  rules={{ required: "Last names is required" }}
+                />
+
+                {/* Age Group*/}
+                {/* TODO figure out a way to get value from slider comp */}
+                <Controller
+                  name="age"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <>
+                      <InputLabel id="ageSelect-label">{"Age"}</InputLabel>
+                      <Slider
+                        size="small"
+                        min={0}
+                        max={100}
+                        onChange={onChange}
+                        aria-label="age picker"
+                        valueLabelDisplay="auto"
+                      />
+                    </>
+                  )}
+                />
+
+                {/* Date Of birth */}
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <Controller
+                    name={"birthDate"}
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <DatePicker
+                        label="Date Of Birth"
+                        value={value}
+                        onChange={onChange}
+                        renderInput={(
+                          params: JSX.IntrinsicAttributes & TextFieldProps
+                        ) => <TextField {...params} />}
+                      />
+                    )}
                   />
-                )}
-                rules={{ required: "Phone number is required" }}
-              />
+                </LocalizationProvider>
 
-              {/* Email Address */}
-              <Controller
-                name="email"
-                control={control}
-                defaultValue=""
-                render={({
-                  field: { onChange, value },
-                  fieldState: { error },
-                }) => (
-                  <TextField
-                    required
-                    label="Email"
-                    variant="outlined"
-                    value={value}
-                    onChange={onChange}
-                    error={!!error}
-                    helperText={error ? error.message : null}
-                  />
-                )}
-                rules={{ required: "Email is required" }}
-              />
+                {/* Phone Number */}
+                {/* TODO: restrict phone number to input to numbers and (xxx)xxx-xxxx format */}
+                <Controller
+                  name="phoneNumber"
+                  control={control}
+                  defaultValue=""
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField
+                      required
+                      label="Phone Number"
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!error}
+                      helperText={error ? error.message : null}
+                    />
+                  )}
+                  rules={{ required: "Phone number is required" }}
+                />
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                endIcon={<SendIcon />}
-              >
-                Submit
-              </Button>
-            </Stack>
-          </form>
-        </CardContent>
-      </Card>
+                {/* Email Address */}
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField
+                      required
+                      label="Email"
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!error}
+                      helperText={error ? error.message : null}
+                    />
+                  )}
+                  rules={{ required: "Email is required" }}
+                />
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  endIcon={<SendIcon />}
+                >
+                  Submit
+                </Button>
+              </Stack>
+            </form>
+          </CardContent>
+        </Card>
+      )}
       {showData && (
-        <>
-          <DataDisplay data={clientData} />
-          <Button onClick={() => setShowData(false)}>Clear Data</Button>
-        </>
+        <Card
+          sx={{
+            margin: "1em",
+            backgroundColor: "#DAD7CD",
+            // textAlign: "Center",
+          }}
+        >
+          <CardContent>
+            <Typography variant="h6" mb={2}>
+              Thank You For Your Submission!
+            </Typography>
+            <DataDisplay data={clientData} />
+          </CardContent>
+          <CardActions sx={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setShowData(false)}
+              endIcon={<RestartAltIcon />}
+            >
+              Reset
+            </Button>
+          </CardActions>
+        </Card>
       )}
     </Box>
   );
